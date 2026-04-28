@@ -1,0 +1,985 @@
+<!doctype html>
+<html lang="hr" class="h-full">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Winehouse — Hotel · Restoran · Guesthouse</title>
+  <script src="https://cdn.tailwindcss.com/3.4.17"></script>
+  <script src="https://cdn.jsdelivr.net/npm/lucide@0.263.0/dist/umd/lucide.min.js"></script>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,400;0,500;0,600;0,700;1,400;1,600&family=Manrope:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+  <style>
+    :root {
+      --cream: #f7f1e8;
+      --cream-light: #fcf8f2;
+      --forest: #243126;
+      --forest-dark: #1b241d;
+      --burgundy: #7b1733;
+      --burgundy-dark: #651128;
+      --gold: #b6924f;
+      --gold-light: #e4c68f;
+      --gold-pale: #f0ddba;
+      --text-dark: #2e2a24;
+      --text-mid: #5c5044;
+      --text-muted: #8a6c46;
+    }
+    html, body { height: 100%; margin: 0; }
+    body { background: var(--cream); color: var(--text-dark); font-family: "Manrope", sans-serif; }
+    .font-display { font-family: "Cormorant Garamond", serif; }
+
+    /* ── NAV ── */
+    .nav-pill {
+      backdrop-filter: blur(16px);
+      -webkit-backdrop-filter: blur(16px);
+      background: rgba(27, 36, 29, 0.55);
+      border: 1px solid rgba(255,255,255,0.15);
+    }
+    .section-tab {
+      position: relative;
+      padding: 0.45rem 1.1rem;
+      border-radius: 9999px;
+      font-size: 11px;
+      letter-spacing: 0.22em;
+      text-transform: uppercase;
+      font-weight: 600;
+      color: rgba(255,255,255,0.72);
+      transition: color 0.25s, background 0.25s;
+      cursor: pointer;
+    }
+    .section-tab.active {
+      background: var(--gold);
+      color: #1b1209;
+    }
+    .section-tab:not(.active):hover { color: #fff; }
+
+    /* ── HERO ── */
+    .hero-overlay {
+      background: linear-gradient(to bottom, rgba(23,29,23,0.15), rgba(23,29,23,0.65)),
+                  linear-gradient(to right, rgba(71,17,33,0.45), rgba(0,0,0,0.05));
+    }
+    .paper-grain {
+      background-image: radial-gradient(rgba(255,255,255,0.18) 0.7px, transparent 0.7px);
+      background-size: 18px 18px;
+    }
+
+    /* ── SECTIONS ── */
+    .page-section { display: none; }
+    .page-section.active { display: block; }
+
+    /* ── ANIMATIONS ── */
+    .reveal { opacity: 0; transform: translateY(20px); }
+    .reveal.in { animation: revealUp 0.8s ease forwards; }
+    @keyframes revealUp { to { opacity: 1; transform: translateY(0); } }
+    .reveal-d1 { animation-delay: 0.08s; }
+    .reveal-d2 { animation-delay: 0.16s; }
+    .reveal-d3 { animation-delay: 0.24s; }
+    .reveal-d4 { animation-delay: 0.32s; }
+
+    /* ── CARDS ── */
+    .soft-shadow { box-shadow: 0 16px 48px rgba(52,33,25,0.08); }
+    .image-card img { transition: transform 0.7s ease; }
+    .image-card:hover img { transform: scale(1.04); }
+
+    .gold-underline { position: relative; padding-bottom: 14px; }
+    .gold-underline::after {
+      content: "";
+      position: absolute; left: 0; bottom: 0;
+      width: 64px; height: 1px;
+      background: linear-gradient(90deg, var(--gold), rgba(182,146,79,0.1));
+    }
+
+    /* ── BOOKING MODAL ── */
+    .modal-backdrop {
+      display: none;
+      position: fixed; inset: 0; z-index: 9999;
+      background: rgba(0,0,0,0.55);
+      align-items: center; justify-content: center;
+      padding: 1rem;
+    }
+    .modal-backdrop.open { display: flex; }
+    .modal-box {
+      background: #fff;
+      border-radius: 28px;
+      max-width: 680px; width: 100%;
+      max-height: 92vh;
+      display: flex; flex-direction: column;
+      box-shadow: 0 32px 80px rgba(0,0,0,0.2);
+      overflow: hidden;
+    }
+    .modal-head {
+      padding: 1.5rem 2rem;
+      border-bottom: 1px solid #e8d8c5;
+      flex-shrink: 0;
+    }
+    .modal-body { padding: 1.5rem 2rem 2rem; overflow-y: auto; flex: 1; }
+    .form-label {
+      display: block; font-size: 11px; letter-spacing: 0.2em;
+      text-transform: uppercase; font-weight: 600;
+      color: var(--text-mid); margin-bottom: 8px;
+    }
+    .form-input {
+      width: 100%; padding: 12px 16px;
+      border: 1px solid #dfd1bf; border-radius: 10px;
+      font-family: "Manrope", sans-serif; font-size: 14px;
+      color: var(--text-dark); background: #fff;
+      box-sizing: border-box;
+      transition: border-color 0.2s, box-shadow 0.2s;
+      outline: none;
+    }
+    .form-input:focus { border-color: var(--gold); box-shadow: 0 0 0 3px rgba(182,146,79,0.15); }
+    .btn-primary {
+      display: inline-flex; align-items: center; justify-content: center; gap: 8px;
+      background: var(--burgundy); color: #fffaf1;
+      border: none; border-radius: 9999px;
+      padding: 14px 28px; font-size: 12px; letter-spacing: 0.18em;
+      text-transform: uppercase; font-weight: 600; cursor: pointer;
+      transition: background 0.2s, transform 0.1s;
+    }
+    .btn-primary:hover { background: var(--burgundy-dark); }
+    .btn-primary:active { transform: translateY(1px); }
+    .btn-outline {
+      display: inline-flex; align-items: center; justify-content: center; gap: 8px;
+      background: transparent; color: var(--text-mid);
+      border: 1px solid #dfd1bf; border-radius: 9999px;
+      padding: 14px 28px; font-size: 12px; letter-spacing: 0.18em;
+      text-transform: uppercase; font-weight: 600; cursor: pointer;
+      transition: background 0.2s;
+    }
+    .btn-outline:hover { background: #f0e8d8; }
+    .btn-ghost {
+      display: inline-flex; align-items: center; justify-content: center; gap: 8px;
+      background: rgba(255,255,255,0.12); color: #fff;
+      border: 1px solid rgba(255,255,255,0.28); border-radius: 9999px;
+      padding: 14px 28px; font-size: 12px; letter-spacing: 0.18em;
+      text-transform: uppercase; font-weight: 600; cursor: pointer;
+      transition: background 0.2s;
+    }
+    .btn-ghost:hover { background: rgba(255,255,255,0.22); }
+
+    .success-msg {
+      display: none;
+      background: #f0f8ec; border: 1px solid #b5d87a;
+      border-radius: 12px; padding: 12px 16px;
+      font-size: 13px; color: #3a5a1a; margin-top: 12px;
+    }
+
+    /* ── MAP GRID ── */
+    .map-grid {
+      background-image:
+        linear-gradient(rgba(87,78,59,0.12) 1px, transparent 1px),
+        linear-gradient(90deg, rgba(87,78,59,0.12) 1px, transparent 1px);
+      background-size: 32px 32px;
+    }
+
+    /* ── MOBILE MENU ── */
+    @media (max-width: 768px) {
+      .desktop-nav { display: none !important; }
+    }
+    @media (min-width: 769px) {
+      .mobile-menu-btn { display: none !important; }
+    }
+  </style>
+</head>
+<body>
+
+<!-- ═══════════════════ HEADER ═══════════════════ -->
+<header class="fixed top-0 inset-x-0 z-50">
+  <div class="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
+    <div class="mt-4 rounded-full nav-pill text-white">
+      <div class="flex items-center justify-between px-5 py-3 sm:px-6">
+
+        <!-- Logo -->
+        <a href="#" onclick="scrollToTop()" class="flex items-center gap-3">
+          <div class="flex h-10 w-10 items-center justify-center rounded-full border border-[#c8a96b]/70 text-[#e4c68f]">
+            <i data-lucide="grape" class="w-5 h-5"></i>
+          </div>
+          <div>
+            <div class="font-display text-2xl leading-none tracking-wide">Winehouse</div>
+            <div class="text-[10px] uppercase tracking-[0.32em] text-white/70">Hotel · Restoran · Guesthouse</div>
+          </div>
+        </a>
+
+        <!-- Desktop: Section tabs + links -->
+        <div class="desktop-nav flex items-center gap-2">
+          <div class="flex items-center gap-1 mr-4 bg-white/8 rounded-full p-1 border border-white/10">
+            <button class="section-tab active" data-section="hotel" onclick="switchSection('hotel')">Hotel</button>
+            <button class="section-tab" data-section="restaurant" onclick="switchSection('restaurant')">Restoran</button>
+            <button class="section-tab" data-section="guesthouse" onclick="switchSection('guesthouse')">Guesthouse</button>
+          </div>
+          <nav class="flex items-center gap-5 text-sm tracking-[0.16em] uppercase text-white/75">
+            <a href="#" onclick="navScroll('wine-section')" class="hover:text-white transition">Vino</a>
+            <a href="#" onclick="navScroll('experiences-section')" class="hover:text-white transition">Doživljaji</a>
+            <a href="#" onclick="navScroll('contact-section')" class="hover:text-white transition">Kontakt</a>
+          </nav>
+        </div>
+
+        <!-- Mobile -->
+        <button class="mobile-menu-btn rounded-lg border border-white/20 p-2 text-white hover:bg-white/10 transition" onclick="toggleMobileMenu()">
+          <i data-lucide="menu" class="w-5 h-5"></i>
+        </button>
+      </div>
+    </div>
+  </div>
+</header>
+
+<!-- Mobile menu -->
+<div id="mobileMenu" class="fixed inset-0 z-40 hidden">
+  <div class="fixed inset-0 bg-black/40" onclick="toggleMobileMenu()"></div>
+  <div class="fixed top-20 left-4 right-4 rounded-3xl border border-[#c8a96b]/40 bg-[#1a2119] shadow-2xl p-6">
+    <p class="text-xs uppercase tracking-[0.28em] text-[#c8a96b] mb-4 px-2">Sekcija</p>
+    <div class="flex gap-2 mb-6">
+      <button class="flex-1 section-tab active text-center py-2" data-section="hotel" onclick="switchSection('hotel'); toggleMobileMenu()">Hotel</button>
+      <button class="flex-1 section-tab text-center py-2" data-section="restaurant" onclick="switchSection('restaurant'); toggleMobileMenu()">Restoran</button>
+      <button class="flex-1 section-tab text-center py-2" data-section="guesthouse" onclick="switchSection('guesthouse'); toggleMobileMenu()">Guesthouse</button>
+    </div>
+    <a href="#" onclick="navScroll('wine-section'); toggleMobileMenu()" class="block px-4 py-3 text-white/80 hover:text-white text-sm uppercase tracking-[0.18em] font-semibold">Vino</a>
+    <a href="#" onclick="navScroll('experiences-section'); toggleMobileMenu()" class="block px-4 py-3 text-white/80 hover:text-white text-sm uppercase tracking-[0.18em] font-semibold">Doživljaji</a>
+    <a href="#" onclick="navScroll('contact-section'); toggleMobileMenu()" class="block px-4 py-3 text-white/80 hover:text-white text-sm uppercase tracking-[0.18em] font-semibold">Kontakt</a>
+  </div>
+</div>
+
+
+<!-- ═══════════════════ SECTION: HOTEL ═══════════════════ -->
+<div id="section-hotel" class="page-section active">
+
+  <!-- Hero -->
+  <section class="relative min-h-screen w-full overflow-hidden" style="min-height: 780px;">
+    <img src="https://images.unsplash.com/photo-1505693416388-ac5ce068fe85?auto=format&fit=crop&w=1600&q=80"
+         alt="Elegantna hotelska soba s pogledom na vinograde"
+         loading="lazy"
+         onerror="this.style.display='none'; this.parentElement.style.background='linear-gradient(135deg,#243126,#2f1b24)'"
+         class="absolute inset-0 h-full w-full object-cover">
+    <div class="absolute inset-0 hero-overlay"></div>
+    <div class="absolute inset-0 paper-grain opacity-20"></div>
+    <div class="relative mx-auto flex h-full max-w-7xl items-end px-4 pb-16 pt-36 sm:px-6 lg:px-8 lg:pb-28">
+      <div class="max-w-3xl text-white reveal in">
+        <p class="mb-5 inline-flex items-center gap-2 rounded-full border border-[#d5b57b]/30 bg-white/10 px-4 py-2 text-[11px] uppercase tracking-[0.28em] text-[#f0ddba]">
+          <span class="inline-block h-1.5 w-1.5 rounded-full bg-[#d5b57b]"></span>
+          Boutique Hotel · Vineyard Views · Quiet Luxury
+        </p>
+        <h1 class="font-display text-5xl leading-[0.94] sm:text-6xl lg:text-8xl">
+          Pet soba tišine, luksuz vinograda.
+        </h1>
+        <p class="mt-6 max-w-2xl text-base leading-8 text-white/82 sm:text-lg">
+          Intimni bijeg za parove i ljubitelje vina koji traže mir, eleganciju i autentičan doživljaj ruralne Njemačke.
+        </p>
+        <div class="mt-9 flex flex-col gap-4 sm:flex-row">
+          <button class="btn-primary" onclick="openModal('hotel')">
+            <i data-lucide="bed-double" class="w-4 h-4"></i>
+            <span>Rezerviraj sobu</span>
+          </button>
+          <button class="btn-ghost" onclick="navScroll('hotel-rooms')">
+            <i data-lucide="arrow-down" class="w-4 h-4"></i>
+            <span>Pogledaj sobe</span>
+          </button>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Highlights -->
+  <section style="background: var(--cream);">
+    <div class="mx-auto max-w-7xl px-4 py-16 sm:px-6 lg:px-8">
+      <div class="grid gap-6 md:grid-cols-3">
+        <div class="reveal rounded-[28px] border border-[#d8c8b2] bg-[#fbf7f0] p-8 soft-shadow">
+          <p class="text-[11px] uppercase tracking-[0.28em]" style="color: var(--text-muted)">Pet soba</p>
+          <h2 class="mt-3 font-display text-4xl" style="color: #2f261f;">Intimnost po mjeri.</h2>
+          <p class="mt-4 text-sm leading-7" style="color: var(--text-mid)">Svaka soba osmišljena je za duboki odmor, s teksturama vinograda i jutarnjim mirom prirode.</p>
+        </div>
+        <div class="reveal rounded-[28px] p-8 text-[#f9f3e8] soft-shadow" style="background: var(--forest);">
+          <p class="text-[11px] uppercase tracking-[0.28em] text-[#dcbc85]">Dizajn & atmosfera</p>
+          <h2 class="mt-3 font-display text-4xl">Prirodni materijali.</h2>
+          <p class="mt-4 text-sm leading-7 text-[#d8d0c2]">Toplo drvo, meki tekstili i nježno svjetlo stvaraju dom daleko od vreve gradova.</p>
+        </div>
+        <div class="reveal rounded-[28px] border border-[#d8c8b2] bg-[#efe2cf] p-8 soft-shadow">
+          <p class="text-[11px] uppercase tracking-[0.28em]" style="color: var(--text-muted)">Usluga</p>
+          <h2 class="mt-3 font-display text-4xl" style="color: #2f261f;">Pažnja u svakom detalju.</h2>
+          <p class="mt-4 text-sm leading-7" style="color: var(--text-mid)">Od doručka od sezonskih namirnica do preporuka za vinske rute — tu ste kod kuće.</p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Rooms -->
+  <section id="hotel-rooms" style="background: var(--cream-light);">
+    <div class="mx-auto max-w-7xl px-4 py-20 sm:px-6 lg:px-8 lg:py-28">
+      <div class="reveal max-w-2xl mb-14">
+        <p class="text-[11px] uppercase tracking-[0.32em]" style="color: var(--text-muted)">Sobe & Suite</p>
+        <h2 class="gold-underline mt-3 font-display text-5xl sm:text-6xl" style="color: #2b201c;">Svaka soba, priča za sebe.</h2>
+        <p class="mt-8 text-base leading-8" style="color: #5b4b3d;">Pet pažljivo uređenih prostora s pogledom na vinograde, svaki s vlastitim karakterom i elegancijom.</p>
+      </div>
+      <div class="grid gap-6 md:grid-cols-2 xl:grid-cols-3">
+        <!-- Room card 1 -->
+        <div class="reveal reveal-d1 rounded-[28px] border border-[#e1d4c3] bg-white soft-shadow overflow-hidden">
+          <div class="image-card h-52 overflow-hidden">
+            <img src="https://images.unsplash.com/photo-1631049307264-da0ec9d70304?auto=format&fit=crop&w=900&q=80"
+                 alt="Vineyard Suite" loading="lazy"
+                 onerror="this.style.background='#d8c4ae'; this.style.minHeight='200px'"
+                 class="h-full w-full object-cover">
+          </div>
+          <div class="p-7">
+            <p class="text-[11px] uppercase tracking-[0.24em]" style="color: var(--text-muted)">Suite · 42m²</p>
+            <h3 class="mt-2 font-display text-3xl" style="color: #2f261f;">Vineyard Suite</h3>
+            <p class="mt-3 text-sm leading-7" style="color: #655548;">Prostrani suite s panoramskim pogledom na vinograde, privatnom terasom i jacuzzijem.</p>
+            <div class="mt-5 flex items-center justify-between">
+              <span class="font-display text-2xl" style="color: var(--burgundy);">od 280€<span class="text-sm font-sans font-normal" style="color: var(--text-mid)">/noć</span></span>
+              <button class="btn-primary text-xs px-5 py-3" onclick="openModal('hotel')">Rezerviraj</button>
+            </div>
+          </div>
+        </div>
+        <!-- Room card 2 -->
+        <div class="reveal reveal-d2 rounded-[28px] border border-[#e1d4c3] bg-white soft-shadow overflow-hidden">
+          <div class="image-card h-52 overflow-hidden">
+            <img src="https://images.unsplash.com/photo-1618773928121-c32242e63f39?auto=format&fit=crop&w=900&q=80"
+                 alt="Garden Room" loading="lazy"
+                 onerror="this.style.background='#c8b49e'; this.style.minHeight='200px'"
+                 class="h-full w-full object-cover">
+          </div>
+          <div class="p-7">
+            <p class="text-[11px] uppercase tracking-[0.24em]" style="color: var(--text-muted)">Dvokrevetna · 30m²</p>
+            <h3 class="mt-2 font-display text-3xl" style="color: #2f261f;">Garden Room</h3>
+            <p class="mt-3 text-sm leading-7" style="color: #655548;">Smirena soba s vrtnim pogledom, hrastovim podom i luksuznom posteljinom od lana.</p>
+            <div class="mt-5 flex items-center justify-between">
+              <span class="font-display text-2xl" style="color: var(--burgundy);">od 195€<span class="text-sm font-sans font-normal" style="color: var(--text-mid)">/noć</span></span>
+              <button class="btn-primary text-xs px-5 py-3" onclick="openModal('hotel')">Rezerviraj</button>
+            </div>
+          </div>
+        </div>
+        <!-- Room card 3 -->
+        <div class="reveal reveal-d3 rounded-[28px] border border-[#e1d4c3] soft-shadow overflow-hidden" style="background: var(--forest);">
+          <div class="image-card h-52 overflow-hidden">
+            <img src="https://images.unsplash.com/photo-1611892440504-42a792e24d32?auto=format&fit=crop&w=900&q=80"
+                 alt="Cellar Room" loading="lazy"
+                 onerror="this.style.background='#2a3a2c'; this.style.minHeight='200px'"
+                 class="h-full w-full object-cover">
+          </div>
+          <div class="p-7">
+            <p class="text-[11px] uppercase tracking-[0.24em] text-[#dcbc85]">Deluxe · 35m²</p>
+            <h3 class="mt-2 font-display text-3xl text-white">Cellar Deluxe</h3>
+            <p class="mt-3 text-sm leading-7 text-white/75">Inspirirana podrumom i tradicijom, s kamennim zidovima i toplim osvjetljenjem za poseban osjećaj mjesta.</p>
+            <div class="mt-5 flex items-center justify-between">
+              <span class="font-display text-2xl text-[#e4c68f]">od 225€<span class="text-sm font-sans font-normal text-white/60">/noć</span></span>
+              <button class="btn-primary text-xs px-5 py-3" onclick="openModal('hotel')">Rezerviraj</button>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+</div><!-- end hotel section -->
+
+
+<!-- ═══════════════════ SECTION: RESTAURANT ═══════════════════ -->
+<div id="section-restaurant" class="page-section">
+
+  <!-- Hero -->
+  <section class="relative w-full overflow-hidden" style="min-height: 780px;">
+    <img src="https://images.unsplash.com/photo-1414235077428-338989a2e8c0?auto=format&fit=crop&w=1600&q=80"
+         alt="Elegantna trpeza restorana s pogledom na vinograde"
+         loading="lazy"
+         onerror="this.style.display='none'; this.parentElement.style.background='linear-gradient(135deg,#2f1b24,#243126)'"
+         class="absolute inset-0 h-full w-full object-cover">
+    <div class="absolute inset-0 hero-overlay"></div>
+    <div class="absolute inset-0 paper-grain opacity-20"></div>
+    <div class="relative mx-auto flex h-full max-w-7xl items-end px-4 pb-16 pt-36 sm:px-6 lg:px-8 lg:pb-28">
+      <div class="max-w-3xl text-white reveal in">
+        <p class="mb-5 inline-flex items-center gap-2 rounded-full border border-[#d5b57b]/30 bg-white/10 px-4 py-2 text-[11px] uppercase tracking-[0.28em] text-[#f0ddba]">
+          <span class="inline-block h-1.5 w-1.5 rounded-full bg-[#d5b57b]"></span>
+          Fine Dining · Sezonski Meni · Degustacijski Meni
+        </p>
+        <h1 class="font-display text-5xl leading-[0.94] sm:text-6xl lg:text-8xl">
+          Sezonska kuhinja, posložena s preciznošću.
+        </h1>
+        <p class="mt-6 max-w-2xl text-base leading-8 text-white/82 sm:text-lg">
+          Chef-vođeni restoran u srcu imanja — intimno iskustvo inspirirano ritmom vinograda i bogatstvom regije.
+        </p>
+        <div class="mt-9 flex flex-col gap-4 sm:flex-row">
+          <button class="btn-primary" onclick="openModal('restaurant')">
+            <i data-lucide="utensils-crossed" class="w-4 h-4"></i>
+            <span>Rezerviraj stol</span>
+          </button>
+          <button class="btn-ghost" onclick="navScroll('menu-section')">
+            <i data-lucide="scroll-text" class="w-4 h-4"></i>
+            <span>Pogledaj meni</span>
+          </button>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Menus -->
+  <section id="menu-section" style="background: var(--cream-light);">
+    <div class="mx-auto max-w-7xl px-4 py-20 sm:px-6 lg:px-8 lg:py-28">
+      <div class="grid items-center gap-12 lg:grid-cols-2">
+        <div class="reveal">
+          <p class="text-[11px] uppercase tracking-[0.32em]" style="color: var(--text-muted)">Naš Pristup</p>
+          <h2 class="gold-underline mt-3 font-display text-5xl sm:text-6xl" style="color: #2b201c;">Kuhar, terroir i tradicija.</h2>
+          <p class="mt-8 text-base leading-8" style="color: #5b4b3d;">Svako jelo je smireno, precizno i duboko povezano s krajolikom vinograda koji ga okružuje. Meni se mijenja sa sezonama, koristeći regionalne namirnice i lokalne vinske paire.</p>
+          <div class="mt-10 space-y-4">
+            <div class="rounded-[22px] border border-[#e1d4c3] bg-white p-6 soft-shadow">
+              <div class="flex items-start gap-4">
+                <div class="rounded-full border border-[#c9a86d] p-2.5 mt-1" style="color: var(--text-muted)"><i data-lucide="sun" class="w-4 h-4"></i></div>
+                <div>
+                  <h3 class="font-display text-2xl" style="color: #2f261f;">Ručak — Light Menu</h3>
+                  <p class="mt-2 text-sm leading-6" style="color: #655548;">Lagani podnevni meni od svježih regionalnih namirnica, vrtnih biljaka i elegantnih detalja. Srijeda–Nedjelja, 12:00–15:30</p>
+                </div>
+              </div>
+            </div>
+            <div class="rounded-[22px] p-6 text-white soft-shadow" style="background: var(--burgundy);">
+              <div class="flex items-start gap-4">
+                <div class="rounded-full border border-white/30 p-2.5 mt-1 text-[#f1dcb0]"><i data-lucide="moon" class="w-4 h-4"></i></div>
+                <div>
+                  <h3 class="font-display text-2xl">Večera — Degustacijski Meni</h3>
+                  <p class="mt-2 text-sm leading-6 text-white/85">Elevated večernje iskustvo s višestrukim hodom i storytellingom Michelin razine. Srijeda–Nedjelja, 18:00–22:30</p>
+                </div>
+              </div>
+            </div>
+            <div class="rounded-[22px] p-6 text-white soft-shadow" style="background: var(--forest);">
+              <div class="flex items-start gap-4">
+                <div class="rounded-full border border-[#dcbc85]/60 p-2.5 mt-1 text-[#e8c88f]"><i data-lucide="wine" class="w-4 h-4"></i></div>
+                <div>
+                  <h3 class="font-display text-2xl">Wine Pairing Experience</h3>
+                  <p class="mt-2 text-sm leading-6 text-white/80">Svaki hod uparen s regionalnim vinom iz naše bogate kolekcije. Dostupno uz večernji meni.</p>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+        <div class="reveal reveal-d2">
+          <div class="grid gap-5">
+            <div class="image-card overflow-hidden rounded-[30px] soft-shadow">
+              <img src="https://images.unsplash.com/photo-1559339352-11d035aa65de?auto=format&fit=crop&w=1200&q=80"
+                   alt="Chef plated gourmet dish" loading="lazy"
+                   onerror="this.parentElement.style.background='#d9c2ab'; this.parentElement.style.minHeight='300px'"
+                   class="h-[380px] w-full object-cover">
+            </div>
+            <div class="grid gap-5 sm:grid-cols-2">
+              <div class="image-card overflow-hidden rounded-[24px] soft-shadow">
+                <img src="https://images.unsplash.com/photo-1544025162-d76694265947?auto=format&fit=crop&w=900&q=80"
+                     alt="Gourmet dish" loading="lazy"
+                     onerror="this.parentElement.style.background='#e7d8c6'; this.parentElement.style.minHeight='200px'"
+                     class="h-[200px] w-full object-cover">
+              </div>
+              <div class="rounded-[24px] border border-[#e1d4c3] bg-[#f2e7d8] p-7 soft-shadow flex flex-col justify-center">
+                <p class="text-[11px] uppercase tracking-[0.24em]" style="color: var(--text-muted)">Filozofija kuhara</p>
+                <p class="mt-3 font-display text-2xl" style="color: #2f261f;">"Tihi luksuz na tanjuru."</p>
+                <p class="mt-3 text-sm leading-6" style="color: #655548;">Svako jelo dizajnirano je da bude smireno, precizno i duboko povezano s krajolikom vinograda.</p>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+</div><!-- end restaurant section -->
+
+
+<!-- ═══════════════════ SECTION: GUESTHOUSE ═══════════════════ -->
+<div id="section-guesthouse" class="page-section">
+
+  <!-- Hero -->
+  <section class="relative w-full overflow-hidden" style="min-height: 780px;">
+    <img src="https://images.unsplash.com/photo-1506377247377-2a5b3b417ebb?auto=format&fit=crop&w=1600&q=80"
+         alt="Rustična guesthouse kuća u vinogradima"
+         loading="lazy"
+         onerror="this.style.display='none'; this.parentElement.style.background='linear-gradient(135deg,#3d2c1a,#243126)'"
+         class="absolute inset-0 h-full w-full object-cover">
+    <div class="absolute inset-0" style="background: linear-gradient(to bottom, rgba(20,28,20,0.2), rgba(20,28,20,0.7)), linear-gradient(to right, rgba(50,30,10,0.5), rgba(0,0,0,0.05));"></div>
+    <div class="absolute inset-0 paper-grain opacity-20"></div>
+    <div class="relative mx-auto flex h-full max-w-7xl items-end px-4 pb-16 pt-36 sm:px-6 lg:px-8 lg:pb-28">
+      <div class="max-w-3xl text-white reveal in">
+        <p class="mb-5 inline-flex items-center gap-2 rounded-full border border-[#d5b57b]/30 bg-white/10 px-4 py-2 text-[11px] uppercase tracking-[0.28em] text-[#f0ddba]">
+          <span class="inline-block h-1.5 w-1.5 rounded-full bg-[#d5b57b]"></span>
+          Guesthouse · Ruralni Odmor · Autentičan Doživljaj
+        </p>
+        <h1 class="font-display text-5xl leading-[0.94] sm:text-6xl lg:text-8xl">
+          Jednostavno. Autentično. Nezaboravno.
+        </h1>
+        <p class="mt-6 max-w-2xl text-base leading-8 text-white/82 sm:text-lg">
+          Naš guesthouse nudi udoban i pristupačniji boravak u samom srcu vinogradskog krajolika — savršen za obitelji i duže odmore.
+        </p>
+        <div class="mt-9 flex flex-col gap-4 sm:flex-row">
+          <button class="btn-primary" onclick="openModal('guesthouse')">
+            <i data-lucide="home" class="w-4 h-4"></i>
+            <span>Rezerviraj smještaj</span>
+          </button>
+          <button class="btn-ghost" onclick="navScroll('guesthouse-units')">
+            <i data-lucide="arrow-down" class="w-4 h-4"></i>
+            <span>Pogledaj jedinice</span>
+          </button>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Guesthouse units -->
+  <section id="guesthouse-units" style="background: var(--cream);">
+    <div class="mx-auto max-w-7xl px-4 py-20 sm:px-6 lg:px-8 lg:py-28">
+      <div class="reveal max-w-2xl mb-14">
+        <p class="text-[11px] uppercase tracking-[0.32em]" style="color: var(--text-muted)">Smještajne Jedinice</p>
+        <h2 class="gold-underline mt-3 font-display text-5xl sm:text-6xl" style="color: #2b201c;">Vaš dom u vinogradima.</h2>
+        <p class="mt-8 text-base leading-8" style="color: #5b4b3d;">Naš guesthouse nudi opušteni karakter i toplinu koja odgovara dužim boravcima, obiteljima ili putnicima koji žele autentično ruralno iskustvo.</p>
+      </div>
+      <div class="grid gap-6 lg:grid-cols-2">
+        <!-- Unit 1 -->
+        <div class="reveal reveal-d1 rounded-[32px] border border-[#e1d4c3] bg-white soft-shadow overflow-hidden">
+          <div class="image-card h-64 overflow-hidden">
+            <img src="https://images.unsplash.com/photo-1499696010180-025ef6e1a8f9?auto=format&fit=crop&w=1200&q=80"
+                 alt="Vineyard Cottage" loading="lazy"
+                 onerror="this.style.background='#c2ad92'; this.style.minHeight='256px'"
+                 class="h-full w-full object-cover">
+          </div>
+          <div class="p-8">
+            <div class="flex items-start justify-between mb-4">
+              <div>
+                <p class="text-[11px] uppercase tracking-[0.24em]" style="color: var(--text-muted)">Apartman · 65m²</p>
+                <h3 class="mt-1 font-display text-3xl" style="color: #2f261f;">Vineyard Cottage</h3>
+              </div>
+              <span class="rounded-full bg-[#f0e8d0] px-3 py-1 text-xs font-semibold uppercase tracking-widest" style="color: var(--text-muted);">Do 4 os.</span>
+            </div>
+            <p class="text-sm leading-7" style="color: #655548;">Rustičan ali udoban apartman za obitelji i grupe — s kuhinjom, dnevnim boravkom i privatnim dvorištem s pogledom na vinograde.</p>
+            <ul class="mt-5 grid grid-cols-2 gap-2">
+              <li class="flex items-center gap-2 text-sm" style="color: #655548;"><i data-lucide="utensils" class="w-3.5 h-3.5 text-[#b6924f]"></i> Opremljena kuhinja</li>
+              <li class="flex items-center gap-2 text-sm" style="color: #655548;"><i data-lucide="wifi" class="w-3.5 h-3.5 text-[#b6924f]"></i> Besplatni WiFi</li>
+              <li class="flex items-center gap-2 text-sm" style="color: #655548;"><i data-lucide="car" class="w-3.5 h-3.5 text-[#b6924f]"></i> Privatno parkiranje</li>
+              <li class="flex items-center gap-2 text-sm" style="color: #655548;"><i data-lucide="trees" class="w-3.5 h-3.5 text-[#b6924f]"></i> Privatni vrt</li>
+            </ul>
+            <div class="mt-6 flex items-center justify-between pt-5 border-t border-[#ece1d4]">
+              <span class="font-display text-2xl" style="color: var(--burgundy);">od 145€<span class="text-sm font-sans font-normal" style="color: var(--text-mid)">/noć</span></span>
+              <button class="btn-primary text-xs px-6 py-3" onclick="openModal('guesthouse')">Rezerviraj</button>
+            </div>
+          </div>
+        </div>
+        <!-- Unit 2 -->
+        <div class="reveal reveal-d2 rounded-[32px] border border-[#e1d4c3] soft-shadow overflow-hidden" style="background: var(--forest);">
+          <div class="image-card h-64 overflow-hidden">
+            <img src="https://images.unsplash.com/photo-1520250497591-112f2f40a3f4?auto=format&fit=crop&w=1200&q=80"
+                 alt="Vineyard Studio" loading="lazy"
+                 onerror="this.style.background='#2a3a2c'; this.style.minHeight='256px'"
+                 class="h-full w-full object-cover">
+          </div>
+          <div class="p-8">
+            <div class="flex items-start justify-between mb-4">
+              <div>
+                <p class="text-[11px] uppercase tracking-[0.24em] text-[#dcbc85]">Studio · 38m²</p>
+                <h3 class="mt-1 font-display text-3xl text-white">Winemaker's Studio</h3>
+              </div>
+              <span class="rounded-full bg-[#1d2a1f] px-3 py-1 text-xs font-semibold uppercase tracking-widest text-[#dcbc85]">Do 2 os.</span>
+            </div>
+            <p class="text-sm leading-7 text-white/75">Kompaktan ali elegantno opremljen studio s kuhinjskim kutkom, za parove koji žele autentičnost vinogradskog načina života.</p>
+            <ul class="mt-5 grid grid-cols-2 gap-2">
+              <li class="flex items-center gap-2 text-sm text-white/70"><i data-lucide="coffee" class="w-3.5 h-3.5 text-[#dcbc85]"></i> Kuhinjski kutak</li>
+              <li class="flex items-center gap-2 text-sm text-white/70"><i data-lucide="wifi" class="w-3.5 h-3.5 text-[#dcbc85]"></i> Besplatni WiFi</li>
+              <li class="flex items-center gap-2 text-sm text-white/70"><i data-lucide="wine" class="w-3.5 h-3.5 text-[#dcbc85]"></i> Dobrodošlica vinima</li>
+              <li class="flex items-center gap-2 text-sm text-white/70"><i data-lucide="sunrise" class="w-3.5 h-3.5 text-[#dcbc85]"></i> Pogled na vinograde</li>
+            </ul>
+            <div class="mt-6 flex items-center justify-between pt-5 border-t border-white/10">
+              <span class="font-display text-2xl text-[#e4c68f]">od 110€<span class="text-sm font-sans font-normal text-white/60">/noć</span></span>
+              <button class="btn-primary text-xs px-6 py-3" onclick="openModal('guesthouse')">Rezerviraj</button>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+</div><!-- end guesthouse section -->
+
+
+<!-- ═══════════════════ SHARED: WINE + EXPERIENCES + CONTACT ═══════════════════ -->
+
+<!-- Wine Section -->
+<section id="wine-section" style="background: var(--forest); color: #f8f2e8;">
+  <div class="mx-auto max-w-7xl px-4 py-20 sm:px-6 lg:px-8 lg:py-28">
+    <div class="grid items-center gap-12 lg:grid-cols-2">
+      <div class="reveal">
+        <p class="text-[11px] uppercase tracking-[0.32em] text-[#dcbc85]">Vinska Kultura</p>
+        <h2 class="gold-underline mt-3 font-display text-5xl text-[#f9f2e7] sm:text-6xl pb-4">Boravak oblikovan kulturom vina.</h2>
+        <p class="mt-8 max-w-xl text-base leading-8 text-[#ddd2c2]">Otkrijte regiju kroz vođene parove, posjete podrumu i intimna upoznavanja s lokalnim vinskim tradicijama. Svaki detalj poziva goste dublje u karakter vinograda.</p>
+        <div class="mt-10 space-y-4">
+          <div class="rounded-[22px] border border-white/10 bg-white/5 p-6">
+            <div class="flex items-start gap-4">
+              <div class="mt-1 rounded-full border border-[#dcbc85]/60 p-3 text-[#e8c88f]"><i data-lucide="wine" class="w-5 h-5"></i></div>
+              <div>
+                <h3 class="font-display text-2xl">Vinska Degustacija</h3>
+                <p class="mt-2 text-sm leading-6 text-[#d9cfbf]">Kurirani okus lokalnih godišta, elegantno stakleno posuđe i priče o terroiru.</p>
+              </div>
+            </div>
+          </div>
+          <div class="rounded-[22px] border border-white/10 bg-white/5 p-6">
+            <div class="flex items-start gap-4">
+              <div class="mt-1 rounded-full border border-[#dcbc85]/60 p-3 text-[#e8c88f]"><i data-lucide="warehouse" class="w-5 h-5"></i></div>
+              <div>
+                <h3 class="font-display text-2xl">Obilazak Podruma</h3>
+                <p class="mt-2 text-sm leading-6 text-[#d9cfbf]">Zakoračite ispod kuće i istražite boce, bačve i zanatstvo iza svakog para.</p>
+              </div>
+            </div>
+          </div>
+          <div class="rounded-[22px] border border-white/10 bg-white/5 p-6">
+            <div class="flex items-start gap-4">
+              <div class="mt-1 rounded-full border border-[#dcbc85]/60 p-3 text-[#e8c88f]"><i data-lucide="map" class="w-5 h-5"></i></div>
+              <div>
+                <h3 class="font-display text-2xl">Regionalna Vinska Kultura</h3>
+                <p class="mt-2 text-sm leading-6 text-[#d9cfbf]">Doživite šarm slavne njemačke vinske regije kroz lokalne rute, imanja i seoske tradicije.</p>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div class="reveal reveal-d2">
+        <div class="grid gap-5 sm:grid-cols-2">
+          <div class="image-card overflow-hidden rounded-[28px] soft-shadow sm:col-span-2">
+            <img src="https://images.unsplash.com/photo-1510812431401-41d2bd2722f3?auto=format&fit=crop&w=1400&q=80"
+                 alt="Rolling vineyards" loading="lazy"
+                 onerror="this.parentElement.style.background='#6a7a63'; this.parentElement.style.minHeight='260px'"
+                 class="h-[280px] w-full object-cover">
+          </div>
+          <div class="image-card overflow-hidden rounded-[24px] soft-shadow">
+            <img src="https://images.unsplash.com/photo-1560512823-829485b8bf24?auto=format&fit=crop&w=900&q=80"
+                 alt="Wine bottles" loading="lazy"
+                 onerror="this.parentElement.style.background='#8b7b65'; this.parentElement.style.minHeight='220px'"
+                 class="h-[220px] w-full object-cover">
+          </div>
+          <div class="rounded-[24px] border border-white/10 bg-white/8 p-7 flex flex-col justify-center">
+            <p class="text-[11px] uppercase tracking-[0.24em] text-[#dcbc85]">Naša ponuda</p>
+            <p class="mt-3 font-display text-2xl text-white">Više od 200 vinskih etiketa iz Mosela i šire regije.</p>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- Experiences -->
+<section id="experiences-section" style="background: var(--cream-light);">
+  <div class="mx-auto max-w-7xl px-4 py-20 sm:px-6 lg:px-8 lg:py-28">
+    <div class="reveal text-center max-w-3xl mx-auto mb-14">
+      <p class="text-[11px] uppercase tracking-[0.32em]" style="color: var(--text-muted)">Doživljaji</p>
+      <h2 class="mt-3 font-display text-5xl sm:text-6xl" style="color: #2b201c;">Spori dani u jednom od najljepših vinogradskih krajolika Njemačke.</h2>
+      <p class="mt-6 text-base leading-8" style="color: #5b4b3d;">Osim stola i sobe, okolna regija poziva na istraživanje — pješice, biciklom i kroz vijugave seoske vinske rute.</p>
+    </div>
+    <div class="grid gap-6 md:grid-cols-2 xl:grid-cols-4">
+      <div class="reveal reveal-d1 rounded-[28px] border border-[#e1d4c3] bg-white p-7 soft-shadow">
+        <div class="rounded-full border border-[#c9a86d] w-fit p-3" style="color: var(--text-muted)"><i data-lucide="trees" class="w-5 h-5"></i></div>
+        <h3 class="mt-5 font-display text-3xl" style="color: #2f261f;">Obilasci vinograda</h3>
+        <p class="mt-3 text-sm leading-7" style="color: #655548;">Prošetajte između loze i saznajte kako krajolik oblikuje svaku bocu.</p>
+      </div>
+      <div class="reveal reveal-d2 rounded-[28px] border border-[#e1d4c3] bg-[#efe2cf] p-7 soft-shadow">
+        <div class="rounded-full border border-[#c9a86d] w-fit p-3" style="color: var(--text-muted)"><i data-lucide="map-pin" class="w-5 h-5"></i></div>
+        <h3 class="mt-5 font-display text-3xl" style="color: #2f261f;">Vinske Rute</h3>
+        <p class="mt-3 text-sm leading-7" style="color: #655548;">Pratite slikovite seoske ceste kroz mjesta degustacije i ikonične regionalne poglede.</p>
+      </div>
+      <div class="reveal reveal-d3 rounded-[28px] border border-[#e1d4c3] p-7 text-white soft-shadow" style="background: var(--forest);">
+        <div class="rounded-full border border-[#dcbc85] w-fit p-3 text-[#e8c88f]"><i data-lucide="bike" class="w-5 h-5"></i></div>
+        <h3 class="mt-5 font-display text-3xl">Biciklističke Staze</h3>
+        <p class="mt-3 text-sm leading-7 text-white/80">Lagana vožnja kroz vinograde, zavoje rijeke i šarmantna vinska sela.</p>
+      </div>
+      <div class="reveal reveal-d4 rounded-[28px] border border-[#e1d4c3] bg-white p-7 soft-shadow">
+        <div class="rounded-full border border-[#c9a86d] w-fit p-3" style="color: var(--text-muted)"><i data-lucide="camera" class="w-5 h-5"></i></div>
+        <h3 class="mt-5 font-display text-3xl" style="color: #2f261f;">Regionalno Otkrivanje</h3>
+        <p class="mt-3 text-sm leading-7" style="color: #655548;">Otkrijte šarm malih njemačkih sela, kulturu i nezaboravne panorame vinograda.</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- Contact -->
+<section id="contact-section" style="background: var(--forest); color: #f8f2e8;">
+  <div class="mx-auto max-w-7xl px-4 py-20 sm:px-6 lg:px-8 lg:py-28">
+    <div class="grid gap-10 lg:grid-cols-2">
+      <div class="reveal">
+        <p class="text-[11px] uppercase tracking-[0.32em] text-[#dcbc85]">Kontakt</p>
+        <h2 class="mt-3 font-display text-5xl text-[#f9f2e7] sm:text-6xl">Planirajte posjet vinogradima.</h2>
+        <p class="mt-6 max-w-xl text-base leading-8 text-[#ddd2c2]">Za rezervacije restorana, soba ili guesthouse smještaja, te kuriranog vinskog iskustva — naš tim će vam rado pomoći.</p>
+        <div class="mt-10 grid gap-4 sm:grid-cols-2">
+          <div class="rounded-[22px] border border-white/10 bg-white/5 p-6">
+            <p class="text-[11px] uppercase tracking-[0.24em] text-[#dcbc85]">Adresa</p>
+            <p class="mt-3 text-base leading-7 text-[#f4ecdf]">Winehouse Hotel & Restaurant<br>Marktstraße 12<br>56330 Kobern-Gondorf, Njemačka</p>
+          </div>
+          <div class="rounded-[22px] border border-white/10 bg-white/5 p-6">
+            <p class="text-[11px] uppercase tracking-[0.24em] text-[#dcbc85]">Radno Vrijeme</p>
+            <p class="mt-3 text-base leading-7 text-[#f4ecdf]">Restoran: Sri–Ned, 12:00–23:00<br>Hotel/Guesthouse: Check-in od 15:00</p>
+          </div>
+          <div class="rounded-[22px] border border-white/10 bg-white/5 p-6">
+            <p class="text-[11px] uppercase tracking-[0.24em] text-[#dcbc85]">Rezervacije</p>
+            <p class="mt-3 text-base leading-7 text-[#f4ecdf]">+49 (0) 123 456 789<br>reservations@winehousehotel.de</p>
+          </div>
+          <div class="rounded-[22px] border border-white/10 bg-white/5 p-6">
+            <p class="text-[11px] uppercase tracking-[0.24em] text-[#dcbc85]">Idealno za</p>
+            <p class="mt-3 text-base leading-7 text-[#f4ecdf]">Ljubitelje vina, romantična vikenda, gurmanizme putnike i obiteljske odmore.</p>
+          </div>
+        </div>
+        <div class="mt-8 flex flex-col sm:flex-row gap-4">
+          <button class="btn-primary" onclick="openModal('hotel')">Rezerviraj Hotel</button>
+          <button class="btn-primary" onclick="openModal('restaurant')">Rezerviraj Restoran</button>
+          <button class="btn-primary" onclick="openModal('guesthouse')">Rezerviraj Guesthouse</button>
+        </div>
+      </div>
+      <div class="reveal reveal-d2">
+        <div class="rounded-[32px] border border-white/10 bg-[#f3e8d6] p-4 soft-shadow">
+          <div class="map-grid rounded-[26px] bg-[#efe0ca] p-6 text-[#3d3027]">
+            <div class="flex items-center justify-between border-b border-[#bfa98c] pb-4">
+              <div>
+                <p class="text-[11px] uppercase tracking-[0.24em]" style="color: var(--text-muted)">Lokacija</p>
+                <h3 class="mt-2 font-display text-3xl" style="color: #2f261f;">U srcu vinograda</h3>
+              </div>
+              <div class="rounded-full border border-[#b6924f] p-3" style="color: var(--text-muted)"><i data-lucide="map-pin" class="w-5 h-5"></i></div>
+            </div>
+            <div class="relative mt-6 h-[320px] overflow-hidden rounded-[22px] bg-[linear-gradient(135deg,#e8d8bf,#f4ebdf)]">
+              <div class="absolute left-[18%] top-[24%] h-24 w-24 rounded-full border border-[#cdb28a]/60"></div>
+              <div class="absolute right-[16%] top-[18%] h-32 w-32 rounded-full border border-[#cdb28a]/60"></div>
+              <div class="absolute left-[30%] bottom-[18%] h-28 w-28 rounded-full border border-[#cdb28a]/60"></div>
+              <div class="absolute left-[12%] top-[58%] -rotate-12 text-[#af9878] text-xs">Vineyard Route</div>
+              <div class="absolute right-[10%] top-[54%] rotate-12 text-[#af9878] text-xs">Village Center</div>
+              <div class="absolute left-[22%] top-[40%] right-[22%] h-0.5 rounded-full bg-[#c0a173]"></div>
+              <div class="absolute left-[46%] top-[32%] bottom-[18%] w-0.5 rounded-full bg-[#c0a173]"></div>
+              <div class="absolute left-1/2 top-1/2 -translate-x-1/2 -translate-y-1/2 flex flex-col items-center">
+                <div class="rounded-full p-4 text-white shadow-xl" style="background: var(--burgundy);">
+                  <i data-lucide="grape" class="w-7 h-7"></i>
+                </div>
+                <p class="mt-3 rounded-full bg-white/80 px-4 py-2 text-xs font-medium uppercase tracking-[0.18em] text-[#5e4738]">Winehouse</p>
+                <p class="mt-2 rounded-lg bg-white/70 px-3 py-1 text-xs text-[#6c512e]">Marktstraße 12, Kobern-Gondorf</p>
+              </div>
+            </div>
+            <div class="mt-5">
+              <a href="https://www.google.com/maps/search/Marktstra%C3%9Fe+12,+56330+Kobern-Gondorf" target="_blank" rel="noopener noreferrer" class="btn-primary inline-flex text-sm">
+                <i data-lucide="navigation" class="w-4 h-4"></i> Upute do nas
+              </a>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- Footer -->
+<footer style="background: var(--forest-dark); color: #ddd2c2;">
+  <div class="mx-auto max-w-7xl px-4 py-10 sm:px-6 lg:px-8">
+    <div class="flex flex-col gap-6 sm:flex-row sm:items-center sm:justify-between">
+      <div>
+        <p class="font-display text-4xl text-[#f8f2e8]">Winehouse</p>
+        <p class="text-xs uppercase tracking-[0.28em] text-[#bfa77d] mt-1">Hotel · Fine Dining Restoran · Guesthouse</p>
+      </div>
+      <div class="flex gap-4">
+        <button class="section-tab active" data-section="hotel" onclick="switchSection('hotel')">Hotel</button>
+        <button class="section-tab" data-section="restaurant" onclick="switchSection('restaurant')">Restoran</button>
+        <button class="section-tab" data-section="guesthouse" onclick="switchSection('guesthouse')">Guesthouse</button>
+      </div>
+      <p class="text-sm text-[#cfc3b1] max-w-xs">Marktstraße 12, 56330 Kobern-Gondorf, Njemačka</p>
+    </div>
+    <div class="mt-8 pt-6 border-t border-white/10 text-xs text-[#8a7a6a]">
+      © 2025 Winehouse Hotel & Fine Dining. Sva prava pridržana.
+    </div>
+  </div>
+</footer>
+
+
+<!-- ═══════════════════ BOOKING MODALS ═══════════════════ -->
+
+<!-- Hotel Modal -->
+<div id="modal-hotel" class="modal-backdrop" onclick="handleBackdropClick(event,'modal-hotel')">
+  <div class="modal-box">
+    <div class="modal-head flex items-center justify-between">
+      <div>
+        <h2 class="font-display text-3xl" style="color: #2f261f;">Rezervacija Sobe</h2>
+        <p class="text-xs uppercase tracking-[0.22em] mt-1" style="color: var(--text-muted);">Hotel — Boutique Smještaj</p>
+      </div>
+      <button onclick="closeModal('modal-hotel')" class="rounded-lg p-2 hover:bg-[#f0e8d8] transition text-[#5c5044]"><i data-lucide="x" class="w-5 h-5"></i></button>
+    </div>
+    <form class="modal-body" onsubmit="submitBooking(event,'modal-hotel','hotel')">
+      <div class="grid gap-5 sm:grid-cols-2">
+        <div><label class="form-label">Ime i Prezime</label><input class="form-input" type="text" placeholder="Vaše ime" required></div>
+        <div><label class="form-label">E-mail</label><input class="form-input" type="email" placeholder="vas@email.com" required></div>
+        <div><label class="form-label">Telefon</label><input class="form-input" type="tel" placeholder="+385 91 234 5678" required></div>
+        <div><label class="form-label">Tip Sobe</label>
+          <select class="form-input" required>
+            <option value="">Odaberite sobu</option>
+            <option>Vineyard Suite (od 280€/noć)</option>
+            <option>Garden Room (od 195€/noć)</option>
+            <option>Cellar Deluxe (od 225€/noć)</option>
+          </select>
+        </div>
+        <div><label class="form-label">Datum Dolaska</label><input class="form-input" type="date" required></div>
+        <div><label class="form-label">Datum Odlaska</label><input class="form-input" type="date" required></div>
+        <div><label class="form-label">Broj Gostiju</label>
+          <select class="form-input" required>
+            <option value="">Odaberite</option>
+            <option>1 gost</option><option>2 gosta</option><option>3 gosta</option><option>4 gosta</option>
+          </select>
+        </div>
+        <div><label class="form-label">Posebni Zahtjevi</label><input class="form-input" type="text" placeholder="Npr. late check-in, alergije..."></div>
+      </div>
+      <div id="success-hotel" class="success-msg">✓ Rezervacija primljena! Potvrdni e-mail stiže uskoro na vašu adresu.</div>
+      <div class="flex gap-3 mt-6">
+        <button type="submit" class="btn-primary flex-1"><i data-lucide="check-circle" class="w-4 h-4"></i><span>Potvrdi Rezervaciju</span></button>
+        <button type="button" class="btn-outline flex-1" onclick="closeModal('modal-hotel')"><i data-lucide="x" class="w-4 h-4"></i><span>Odustani</span></button>
+      </div>
+    </form>
+  </div>
+</div>
+
+<!-- Restaurant Modal -->
+<div id="modal-restaurant" class="modal-backdrop" onclick="handleBackdropClick(event,'modal-restaurant')">
+  <div class="modal-box">
+    <div class="modal-head flex items-center justify-between">
+      <div>
+        <h2 class="font-display text-3xl" style="color: #2f261f;">Rezervacija Stola</h2>
+        <p class="text-xs uppercase tracking-[0.22em] mt-1" style="color: var(--text-muted);">Restoran — Fine Dining</p>
+      </div>
+      <button onclick="closeModal('modal-restaurant')" class="rounded-lg p-2 hover:bg-[#f0e8d8] transition text-[#5c5044]"><i data-lucide="x" class="w-5 h-5"></i></button>
+    </div>
+    <form class="modal-body" onsubmit="submitBooking(event,'modal-restaurant','restaurant')">
+      <div class="grid gap-5 sm:grid-cols-2">
+        <div><label class="form-label">Ime i Prezime</label><input class="form-input" type="text" placeholder="Vaše ime" required></div>
+        <div><label class="form-label">E-mail</label><input class="form-input" type="email" placeholder="vas@email.com" required></div>
+        <div><label class="form-label">Telefon</label><input class="form-input" type="tel" placeholder="+385 91 234 5678" required></div>
+        <div><label class="form-label">Vrsta Iskustva</label>
+          <select class="form-input" required>
+            <option value="">Odaberite</option>
+            <option>Ručak — Light Menu</option>
+            <option>Večera — Degustacijski Meni</option>
+            <option>Wine Pairing Experience</option>
+            <option>Privatna Večera (grupo)</option>
+          </select>
+        </div>
+        <div><label class="form-label">Datum</label><input class="form-input" type="date" required></div>
+        <div><label class="form-label">Vrijeme</label><input class="form-input" type="time" required></div>
+        <div><label class="form-label">Broj Gostiju</label>
+          <select class="form-input" required>
+            <option value="">Odaberite</option>
+            <option>1 gost</option><option>2 gosta</option><option>3 gosta</option><option>4 gosta</option><option>5 gostiju</option><option>6 gostiju</option><option>7 gostiju</option><option>8+ gostiju</option>
+          </select>
+        </div>
+        <div><label class="form-label">Prehrambene Preferencije</label><input class="form-input" type="text" placeholder="Alergije, veganski, vegetarijan..."></div>
+      </div>
+      <div><label class="form-label mt-5 block">Posebna Napomena</label><textarea class="form-input mt-1" rows="3" placeholder="Posebna prigoda, zahtjevi..."></textarea></div>
+      <div id="success-restaurant" class="success-msg">✓ Rezervacija stola primljena! Potvrdni e-mail stiže uskoro na vašu adresu.</div>
+      <div class="flex gap-3 mt-6">
+        <button type="submit" class="btn-primary flex-1"><i data-lucide="check-circle" class="w-4 h-4"></i><span>Potvrdi Rezervaciju</span></button>
+        <button type="button" class="btn-outline flex-1" onclick="closeModal('modal-restaurant')"><i data-lucide="x" class="w-4 h-4"></i><span>Odustani</span></button>
+      </div>
+    </form>
+  </div>
+</div>
+
+<!-- Guesthouse Modal -->
+<div id="modal-guesthouse" class="modal-backdrop" onclick="handleBackdropClick(event,'modal-guesthouse')">
+  <div class="modal-box">
+    <div class="modal-head flex items-center justify-between">
+      <div>
+        <h2 class="font-display text-3xl" style="color: #2f261f;">Rezervacija Guesthousa</h2>
+        <p class="text-xs uppercase tracking-[0.22em] mt-1" style="color: var(--text-muted);">Guesthouse — Ruralni Smještaj</p>
+      </div>
+      <button onclick="closeModal('modal-guesthouse')" class="rounded-lg p-2 hover:bg-[#f0e8d8] transition text-[#5c5044]"><i data-lucide="x" class="w-5 h-5"></i></button>
+    </div>
+    <form class="modal-body" onsubmit="submitBooking(event,'modal-guesthouse','guesthouse')">
+      <div class="grid gap-5 sm:grid-cols-2">
+        <div><label class="form-label">Ime i Prezime</label><input class="form-input" type="text" placeholder="Vaše ime" required></div>
+        <div><label class="form-label">E-mail</label><input class="form-input" type="email" placeholder="vas@email.com" required></div>
+        <div><label class="form-label">Telefon</label><input class="form-input" type="tel" placeholder="+385 91 234 5678" required></div>
+        <div><label class="form-label">Tip Smještaja</label>
+          <select class="form-input" required>
+            <option value="">Odaberite</option>
+            <option>Vineyard Cottage — apartman za 4 os. (od 145€/noć)</option>
+            <option>Winemaker's Studio — studio za 2 os. (od 110€/noć)</option>
+          </select>
+        </div>
+        <div><label class="form-label">Datum Dolaska</label><input class="form-input" type="date" required></div>
+        <div><label class="form-label">Datum Odlaska</label><input class="form-input" type="date" required></div>
+        <div><label class="form-label">Broj Gostiju</label>
+          <select class="form-input" required>
+            <option value="">Odaberite</option>
+            <option>1 gost</option><option>2 gosta</option><option>3 gosta</option><option>4 gosta</option>
+          </select>
+        </div>
+        <div><label class="form-label">Posebni Zahtjevi</label><input class="form-input" type="text" placeholder="Npr. dolazak s kućnim ljubimcem, alergije..."></div>
+      </div>
+      <div id="success-guesthouse" class="success-msg">✓ Rezervacija guesthousa primljena! Potvrdni e-mail stiže uskoro na vašu adresu.</div>
+      <div class="flex gap-3 mt-6">
+        <button type="submit" class="btn-primary flex-1"><i data-lucide="check-circle" class="w-4 h-4"></i><span>Potvrdi Rezervaciju</span></button>
+        <button type="button" class="btn-outline flex-1" onclick="closeModal('modal-guesthouse')"><i data-lucide="x" class="w-4 h-4"></i><span>Odustani</span></button>
+      </div>
+    </form>
+  </div>
+</div>
+
+
+<script>
+  // ── SECTION SWITCHING ──
+  function switchSection(name) {
+    document.querySelectorAll('.page-section').forEach(s => s.classList.remove('active'));
+    document.querySelectorAll('[data-section]').forEach(t => t.classList.remove('active'));
+    const sec = document.getElementById('section-' + name);
+    if (sec) {
+      sec.classList.add('active');
+      window.scrollTo({ top: 0, behavior: 'smooth' });
+      setTimeout(() => initReveal(), 100);
+    }
+    document.querySelectorAll('[data-section="' + name + '"]').forEach(t => t.classList.add('active'));
+  }
+
+  function scrollToTop() {
+    window.scrollTo({ top: 0, behavior: 'smooth' });
+  }
+
+  function navScroll(id) {
+    const el = document.getElementById(id);
+    if (el) el.scrollIntoView({ behavior: 'smooth', block: 'start' });
+  }
+
+  // ── MOBILE MENU ──
+  function toggleMobileMenu() {
+    const menu = document.getElementById('mobileMenu');
+    menu.classList.toggle('hidden');
+  }
+
+  // ── MODALS ──
+  function openModal(type) {
+    document.getElementById('modal-' + type).classList.add('open');
+    document.body.style.overflow = 'hidden';
+  }
+  function closeModal(id) {
+    document.getElementById(id).classList.remove('open');
+    document.body.style.overflow = '';
+  }
+  function handleBackdropClick(e, id) {
+    if (e.target === document.getElementById(id)) closeModal(id);
+  }
+
+  function submitBooking(e, modalId, type) {
+    e.preventDefault();
+    const successEl = document.getElementById('success-' + type);
+    successEl.style.display = 'block';
+    setTimeout(() => {
+      closeModal(modalId);
+      successEl.style.display = 'none';
+      e.target.reset();
+    }, 2800);
+  }
+
+  // ── REVEAL ANIMATIONS ──
+  function initReveal() {
+    const observer = new IntersectionObserver((entries) => {
+      entries.forEach(entry => {
+        if (entry.isIntersecting) {
+          entry.target.classList.add('in');
+          observer.unobserve(entry.target);
+        }
+      });
+    }, { threshold: 0.12, rootMargin: '0px 0px -40px 0px' });
+
+    document.querySelectorAll('.reveal:not(.in)').forEach(el => observer.observe(el));
+  }
+
+  // ── INIT ──
+  document.addEventListener('DOMContentLoaded', () => {
+    lucide.createIcons();
+    initReveal();
+  });
+</script>
+</body>
+</html>
